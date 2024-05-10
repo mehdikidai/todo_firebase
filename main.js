@@ -1,10 +1,9 @@
 import "./style.scss";
-import { db, todoRef } from "./firebase.confige.js";
+import { todoRef, docRefById } from "./firebase.config.js";
 import td from "./lib/td.js";
 import { z } from "zod";
 
 import {
-    doc,
     addDoc,
     Timestamp,
     onSnapshot,
@@ -15,12 +14,12 @@ import {
     limit,
 } from "firebase/firestore";
 
-let list = document.getElementById("list");
+const list = document.getElementById("list");
 
 const contentSchema = z.string().min(2).max(40).trim();
 
 const form = document.getElementById("form");
-let todo_text = document.getElementById("todo_text");
+const todo_text = document.getElementById("todo_text");
 
 form.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -54,6 +53,7 @@ onSnapshot(q, (snap) => {
         done: el.data().done,
         date: el.data().date,
     }));
+
     showData(data);
 
     console.log(data);
@@ -61,14 +61,13 @@ onSnapshot(q, (snap) => {
 
 function showData(arr) {
     list.innerHTML = "";
-
     arr.forEach((el) => {
         list.innerHTML += td(el);
     });
 }
 
 function deletTodo(id) {
-    const docRef = doc(db, "todo", id);
+    const docRef = docRefById(id);
 
     swal({
         title: "Are you sure?",
@@ -86,7 +85,7 @@ function deletTodo(id) {
 
 function doneTodo({ id, done }) {
     const isTrue = /^true$/i.test(done);
-    const docRef = doc(db, "todo", id);
+    const docRef = docRefById(id);
 
     try {
         updateDoc(docRef, { done: !isTrue });
@@ -96,7 +95,7 @@ function doneTodo({ id, done }) {
 }
 
 function updateTodo({ id, content }) {
-    const docRef = doc(db, "todo", id);
+    const docRef = docRefById(id);
     console.log(id, content);
     swal({
         title: "Are you sure?",
@@ -107,10 +106,8 @@ function updateTodo({ id, content }) {
                 value: content,
             },
         },
-        button: {
-            text: "Update",
-            closeModal: false,
-        },
+        buttons: ["Cancel", "Update"]
+        
     }).then((txt) => {
         console.log(txt);
         if (contentSchema.safeParse(txt).success) {

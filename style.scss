@@ -133,7 +133,7 @@ body {
                 align-items: center;
                 justify-content: center;
                 i {
-                    font-size: 16px;
+                    font-size: 18px;
                 }
             }
         }
@@ -257,6 +257,7 @@ body {
 .swal-modal {
     //background: li(#172a3a, 4%) !important;
     background: lighten($black_2, 0%) !important;
+    //background: $bgcolor !important;
     border: 1px solid $main !important;
     margin: 200px auto 50px;
     max-width: 410px !important;
@@ -274,19 +275,26 @@ body {
     .swal-button {
         padding-inline: 16px !important;
         padding-block: 8px !important;
-        border: 1px solid $main !important;
-        background: transparent !important;
-        color: $white !important;
-        transition: all .3s ease-in-out;
+        
+        background: $main !important;
+        color: $bgcolor !important;
+        box-shadow: 0 0 0 0 red;
+        transition: all 0.2s cubic-bezier(.68,-0.55,.27,1.55);
         &:active,
         &:focus {
             outline: none !important;
             box-shadow: none !important;
         }
+        &--cancel{
+          background: transparent !important;
+          border: 1px solid $main !important;
+          color: $main !important;
+        }
         &:hover{
-          background: lighten($black_2, 5%) !important;
+            box-shadow: 0 0 0 3px rgba($main, 0.4) !important;
         }
     }
+    
     .swal-icon {
         display: none !important;
     }
