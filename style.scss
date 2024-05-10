@@ -1,0 +1,342 @@
+@import "./css/config";
+@import "./css/nav";
+
+$bgcolor: #0d1117;
+$main: #6baf8d;
+$black_2: #151b21;
+$white:#fbfbfb;
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Red Hat Display", sans-serif;
+    font-family: "Aldrich", sans-serif;
+    border-radius: 0 !important;
+}
+
+:root {
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+
+    --bgcolor: #0d1117;
+    --main: #6baf8d;
+    --black_2: #151b21;
+}
+
+a {
+    font-weight: 500;
+    color: #646cff;
+    text-decoration: inherit;
+}
+a:hover {
+    color: #535bf2;
+}
+
+body {
+    min-width: 320px;
+    min-height: 100vh;
+    background: var(--bgcolor);
+    --sb-track-color: #1b3244;
+    --sb-thumb-color: #51e5ff;
+    --sb-size: 6px;
+}
+
+::-webkit-scrollbar {
+    width: var(--sb-size);
+}
+
+::-webkit-scrollbar-track {
+    background: var(--sb-track-color);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--sb-thumb-color);
+    border-radius: 3px;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+    body {
+        scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
+    }
+}
+
+.box_todo {
+    max-width: 550px;
+    width: calc(100vw - 20px);
+    min-height: 450px;
+    //background: red;
+    margin: 0 auto 50px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    .form_div {
+        padding-top: 20px;
+        padding-bottom: 30px;
+        background: var(--bgcolor);
+        position: sticky;
+        //border-bottom: 1px dashed $main;
+        top: 0px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        z-index: 2;
+        .tit_app {
+            height: 170px;
+            //background: red;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            h1 {
+                font-size: 40px !important;
+                text-transform: uppercase;
+                font-family: "Press Start 2P", system-ui;
+                color: var(--main);
+                user-select: none;
+
+                //text-shadow: 4px 4px #000;
+            }
+        }
+        form {
+            display: flex;
+            gap: 0;
+            height: 44px;
+            //background: blue;
+            height: 44px;
+            input[type="text"] {
+                flex: 1;
+                height: 100%;
+                padding-inline: 20px;
+                background: none;
+                border: 1px solid $main;
+                border-radius: 4px 0 0 4px;
+                color: var(--main);
+                font-size: 14px;
+
+                &:focus {
+                    outline: none;
+                    box-shadow: none;
+                }
+            }
+            button {
+                width: 60px;
+                border: none;
+                background: var(--main);
+                //border: 2px solid rgba(81, 229, 255, 0.1);
+                border-radius: 0 4px 4px 0;
+                color: var(--bgcolor);
+                font-size: 14px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                i {
+                    font-size: 16px;
+                }
+            }
+        }
+    }
+    .list {
+        flex: 1;
+        //background: darkorange;
+        //overflow-y: scroll;
+        //border: 2px solid #51e5ff1f;
+        //border-radius: 10px;
+        ul {
+            display: flex;
+            flex-direction: column;
+            //gap: 10px;
+            li {
+                //background: var(--black_2);
+                height: 44px;
+                //padding-inline: 20px;
+                display: flex;
+                //flex-direction: row-reverse;
+                //border-radius: 4px;
+                //border: 1px solid #ffffff0d;
+                border-bottom: 1px solid $main;
+                transition: all 0.4s ease-in;
+
+                .date_todo {
+                    width: auto;
+                    padding-inline: 15px;
+                    background: transparent;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    pointer-events: none;
+                    display: none;
+                    span {
+                        font-size: 12px;
+                        color: rgba($main, 0.4);
+                    }
+                    &.done {
+                        i {
+                            color: var(--main);
+                        }
+                    }
+                }
+                .content {
+                    flex: 1;
+                    //background: #51e5ff;
+                    padding-inline: 15px;
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    span {
+                        width: 8px;
+                        height: 8px;
+                        background: $white;
+                        display: block;
+                        border-radius: 50%;
+                        //transform: translateY(1px);
+                        &.done {
+                            background: $main;
+                        }
+                    }
+                    input {
+                        line-height: 40px;
+                        font-size: 14px;
+                        font-weight: 400;
+                        width: 100%;
+                        color: $white;
+                        border: none;
+                        background: transparent;
+                        cursor: pointer;
+                        padding-left: 5px;
+                        text-transform: capitalize;
+                        &:focus {
+                            outline: none;
+                            box-shadow: none;
+                        }
+                        &.done {
+                            color: var(--main);
+                            text-decoration: line-through;
+                        }
+                    }
+                }
+                .actions {
+                    width: auto;
+                    //background: red;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    flex-direction: row-reverse;
+                    gap: 0;
+                    padding-inline: 6px;
+                    button {
+                        width: 28px;
+                        height: 28px;
+                        border: none;
+                        background: transparent;
+                        border-radius: 4px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        cursor: pointer;
+                        border: none;
+                        &.active {
+                            i {
+                                color: $main;
+                            }
+                        }
+                        i {
+                            font-size: 18px;
+                            color: $main;
+                            pointer-events: none;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.swal-modal {
+    //background: li(#172a3a, 4%) !important;
+    background: lighten($black_2, 0%) !important;
+    border: 1px solid $main !important;
+    margin: 200px auto 50px;
+    max-width: 410px !important;
+    width: 90vw !important;
+    .swal-text {
+        font-size: 14px;
+        text-transform: capitalize;
+        text-align: center;
+        color: $white;
+    }
+    .swal-title {
+        color: var(--main) !important;
+        font-size: 20px;
+    }
+    .swal-button {
+        padding-inline: 16px !important;
+        padding-block: 8px !important;
+        border: 1px solid $main !important;
+        background: transparent !important;
+        color: $white !important;
+        transition: all .3s ease-in-out;
+        &:active,
+        &:focus {
+            outline: none !important;
+            box-shadow: none !important;
+        }
+        &:hover{
+          background: lighten($black_2, 5%) !important;
+        }
+    }
+    .swal-icon {
+        display: none !important;
+    }
+    .swal-button-container {
+        margin: 0;
+    }
+}
+
+.swal-overlay {
+    display: flex;
+    align-items: start;
+}
+
+.swal-footer {
+    padding: 15px;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-direction: row-reverse;
+}
+
+.swal-content__input {
+
+	border: 1px solid $main;
+	padding: 10px 13px;
+	border-radius: 4px;
+	background: transparent;
+    color: $white;
+    &:focus{
+        border-color: $main;
+    }
+}
+
+// -------------
+
+.notyf__toast--lower {
+    margin-top: 15px !important;
+}
+
+.notyf__message {
+    line-height: 25px;
+    padding-block: 0;
+    font-size: 14px;
+}
+
+.notyf__wrapper {
+    padding: 10px;
+}
+
+.todo-notyf {
+    border: 2px solid $main;
+    border-radius: 4px;
+}
