@@ -2,7 +2,6 @@ import "./style.scss";
 import { todoRef, docRefById } from "./firebase.config.js";
 import td from "./lib/td.js";
 import { z } from "zod";
-
 import {
     addDoc,
     Timestamp,
@@ -15,13 +14,13 @@ import {
 } from "firebase/firestore";
 
 const list = document.getElementById("list");
-
 const contentSchema = z.string().min(2).max(40).trim();
-
 const form = document.getElementById("form");
 const todo_text = document.getElementById("todo_text");
 
+
 form.addEventListener("submit", (e) => {
+    
     e.preventDefault();
 
     if (contentSchema.safeParse(todo_text.value).success) {
@@ -72,6 +71,7 @@ function deletTodo(id) {
     swal({
         title: "Are you sure?",
         text: "Lorem Ipsum is simply dummy text of the",
+        icon:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxZW0iIGhlaWdodD0iMWVtIiB2aWV3Qm94PSIwIDAgMTYgMTYiPjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzZiYWY4ZCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjEuNSIgZD0iTTUuNzUgNC4yNXYtMi41aDQuNXYyLjVtLTYuNSAxdjloOC41di05bS05LjUtLjVoMTAuNSIvPjwvc3ZnPg==",
         buttons: true,
         dangerMode: true,
     }).then((willDelete) => {
