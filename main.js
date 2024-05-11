@@ -12,15 +12,20 @@ import {
     orderBy,
     limit,
 } from "firebase/firestore";
+import moment from 'moment';
 
 const list = document.getElementById("list");
 const contentSchema = z.string().min(2).max(40).trim();
 const form = document.getElementById("form");
 const todo_text = document.getElementById("todo_text");
 
+window.addEventListener("load", function () {
+    this.setTimeout(() => {
+        this.document.getElementById("loading_box").remove();
+    }, 1000);
+});
 
 form.addEventListener("submit", (e) => {
-    
     e.preventDefault();
 
     if (contentSchema.safeParse(todo_text.value).success) {
@@ -50,19 +55,23 @@ onSnapshot(q, (snap) => {
         id: el.id,
         content: el.data().content,
         done: el.data().done,
-        date: el.data().date,
+        date: el.data().date.toDate(),
     }));
 
     showData(data);
 
-    console.log(data);
+    //console.log(data);
 });
 
 function showData(arr) {
     list.innerHTML = "";
-    arr.forEach((el) => {
-        list.innerHTML += td(el);
-    });
+    if (arr.length > 0) {
+        arr.forEach((el) => {
+            list.innerHTML += td(el);
+        });
+    } else {
+        list.innerHTML = `<div class='empty'><span>Empty</span><i class='material-symbols-outlined'>scan_delete</i></div>`;
+    }
 }
 
 function deletTodo(id) {
@@ -71,7 +80,7 @@ function deletTodo(id) {
     swal({
         title: "Are you sure?",
         text: "Lorem Ipsum is simply dummy text of the",
-        icon:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxZW0iIGhlaWdodD0iMWVtIiB2aWV3Qm94PSIwIDAgMTYgMTYiPjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzZiYWY4ZCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjEuNSIgZD0iTTUuNzUgNC4yNXYtMi41aDQuNXYyLjVtLTYuNSAxdjloOC41di05bS05LjUtLjVoMTAuNSIvPjwvc3ZnPg==",
+        icon: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxZW0iIGhlaWdodD0iMWVtIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGZpbGw9IiM2YmFmOGQiIGQ9Ik0xNiAydjRoNnYyaC0ydjE0SDRWOEgyVjZoNlYyem0tMiAyaC00djJoNHptMCA0SDZ2MTJoMTJWOHptLTUgMmgydjhIOXptNiAwaC0ydjhoMnoiLz48L3N2Zz4=",
         buttons: true,
         dangerMode: true,
     }).then((willDelete) => {
@@ -106,8 +115,7 @@ function updateTodo({ id, content }) {
                 value: content,
             },
         },
-        buttons: ["Cancel", "Update"]
-        
+        buttons: ["Cancel", "Update"],
     }).then((txt) => {
         console.log(txt);
         if (contentSchema.safeParse(txt).success) {
@@ -139,6 +147,26 @@ const observer = new MutationObserver((obs) => {
         .forEach((el) =>
             el.addEventListener("click", (t) => updateTodo(t.target.dataset))
         );
+    document
+        .querySelectorAll(".show_todo")
+        .forEach((el) =>
+            el.addEventListener("click", (t) => showTodoInfo(t.target.dataset))
+        );
 });
 
 observer.observe(list, { childList: true });
+
+function showTodoInfo(todo) {
+    //console.log(todo,todo.date,moment(todo.date).fromNow());
+    swal({
+        title: "Created At",
+        text: moment(new Date(todo.date)).format('LLL'),
+        button: "close",
+    });
+}
+
+const date_new = document.getElementById('date_new')
+
+setInterval(()=>{
+    date_new.innerHTML = moment().format('MMMM Do YYYY, h:mm:ss a');
+},1000)

@@ -1,10 +1,10 @@
 @import "./css/config";
 @import "./css/nav";
 
-$bgcolor: #0d1117;
-$main: #6baf8d;
-$black_2: #151b21;
-$white:#fbfbfb;
+$bgcolor: var(--bgcolor);
+$main: var(--main);
+$black_2: var(--black_2);
+$white: var(--white);
 
 * {
     margin: 0;
@@ -16,31 +16,21 @@ $white:#fbfbfb;
 }
 
 :root {
-    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-    line-height: 1.5;
-    font-weight: 400;
-
     --bgcolor: #0d1117;
     --main: #6baf8d;
     --black_2: #151b21;
-}
-
-a {
-    font-weight: 500;
-    color: #646cff;
-    text-decoration: inherit;
-}
-a:hover {
-    color: #535bf2;
+    --white: #fbfbfb;
 }
 
 body {
     min-width: 320px;
     min-height: 100vh;
     background: var(--bgcolor);
-    --sb-track-color: #1b3244;
-    --sb-thumb-color: #51e5ff;
-    --sb-size: 6px;
+    // //background-image: url("./img/bg.svg");
+    // background-size: 20%;
+    // background-repeat: no-repeat;
+    // background-repeat: repeat-x;
+    // background-position: bottom 40px left;
 }
 
 ::-webkit-scrollbar {
@@ -89,8 +79,14 @@ body {
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-direction: column;
+            gap: 10px;
+            span{
+                font-size: 12px;
+                color: #fbfbfb7d;
+            }
             h1 {
-                font-size: 40px !important;
+                font-size: 45px !important;
                 text-transform: uppercase;
                 font-family: "Press Start 2P", system-ui;
                 color: var(--main);
@@ -133,7 +129,7 @@ body {
                 align-items: center;
                 justify-content: center;
                 i {
-                    font-size: 18px;//ffesf
+                    font-size: 18px; //ffesf
                 }
             }
         }
@@ -148,17 +144,32 @@ body {
             display: flex;
             flex-direction: column;
             //gap: 10px;
-            li {
-                
-                height: 44px;
-                //padding-inline: 20px;
+            .empty {
+                //background: red;
+                height: 120px;
                 display: flex;
-                //flex-direction: row-reverse;
-                //border-radius: 4px;
-                //border: 1px solid #ffffff0d;
+                align-items: center;
+                justify-content: center;
+                border: 1px solid $main;
+                flex-direction: column-reverse;
+                gap: 10px;
+                span {
+                    color: $main;
+                    font-size: 14px;
+                }
+                i {
+                    font-size: 24px;
+                    color: $main;
+                }
+            }
+            li {
+                height: auto;
+                display: grid;
+                grid-template-columns: 1fr min-content;
+                grid-template-rows: 44px;
                 border-bottom: 1px solid $main;
                 transition: all 0.2s ease-in;
-
+                position: relative;
                 .date_todo {
                     width: auto;
                     padding-inline: 15px;
@@ -197,7 +208,7 @@ body {
                         }
                     }
                     input {
-                        line-height: 40px;
+                        line-height: 42px;
                         font-size: 14px;
                         font-weight: 400;
                         width: 100%;
@@ -254,8 +265,7 @@ body {
     }
 }
 
-
-footer{
+footer {
     position: fixed;
     bottom: 0;
     left: 0;
@@ -265,16 +275,34 @@ footer{
     display: flex;
     align-items: center;
     justify-content: center;
-    h2{
+    h2 {
         color: $main;
         font-size: 20px;
     }
 }
 
+//-------------------- loading --- start
+
+.loading_box {
+    position: fixed;
+    height: 100dvh;
+    inset: 0;
+    background: $bgcolor;
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    svg {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+//--------------------- loading --- end
 
 .swal-modal {
     //background: li(#172a3a, 4%) !important;
-    background: lighten($black_2, 0%) !important;
+    background: $black_2 !important;
     //background: $bgcolor !important;
     border: 1px solid $main !important;
     margin: 200px auto 50px;
@@ -286,37 +314,41 @@ footer{
         text-align: center;
         color: $white;
     }
+
     .swal-title {
         color: var(--main) !important;
         font-size: 20px;
+        &:not(:last-child) {
+            margin-bottom: 15px;
+        }
     }
     .swal-button {
         padding-inline: 16px !important;
         padding-block: 8px !important;
-        
+
         background: $main !important;
         color: $bgcolor !important;
-        box-shadow: 0 0 0 0 red;
-        transition: all 0.2s cubic-bezier(.68,-0.55,.27,1.55);
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+        transition: all 0.2s cubic-bezier(0.68, -0.55, 0.27, 1.55);
         &:active,
         &:focus {
             outline: none !important;
             box-shadow: none !important;
         }
-        &--cancel{
-          background: transparent !important;
-          border: 1px solid $main !important;
-          color: $main !important;
+        &--cancel {
+            background: transparent !important;
+            border: 1px solid $main !important;
+            color: $main !important;
         }
-        &:hover{
+        &:hover {
             box-shadow: 0 0 0 3px rgba($main, 0.4) !important;
         }
     }
-    
+
     .swal-icon {
         //display: none !important;
-        margin: 35px auto 10px;
-        img{
+        margin: 35px auto 0px;
+        img {
             width: 30px;
         }
     }
@@ -328,6 +360,8 @@ footer{
 .swal-overlay {
     display: flex;
     align-items: start;
+    background: rgba(13, 17, 23, 0.2);
+    backdrop-filter: blur(3px);
 }
 
 .swal-footer {
@@ -340,13 +374,12 @@ footer{
 }
 
 .swal-content__input {
-
-	border: 1px solid $main;
-	padding: 10px 13px;
-	border-radius: 4px;
-	background: transparent;
+    border: 1px solid $main;
+    padding: 10px 13px;
+    border-radius: 4px;
+    background: transparent;
     color: $white;
-    &:focus{
+    &:focus {
         border-color: $main;
     }
 }
