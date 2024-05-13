@@ -22,6 +22,16 @@ $white: var(--white);
     --white: #fbfbfb;
 }
 
+::-moz-selection {
+    color: $bgcolor;
+    background: $main;
+}
+
+::selection {
+    color: $bgcolor;
+    background: $main;
+}
+
 body {
     min-width: 320px;
     min-height: 100vh;
@@ -54,14 +64,16 @@ body {
 }
 
 .box_todo {
-    max-width: 550px;
+    max-width: 650px;
     width: calc(100vw - 20px);
     min-height: 450px;
+    height: calc(100dvh - 120px);
     //background: red;
     margin: 0 auto 50px;
     display: flex;
     flex-direction: column;
     gap: 30px;
+    padding-bottom: 44px;
     .form_div {
         padding-top: 20px;
         padding-bottom: 30px;
@@ -74,23 +86,41 @@ body {
         gap: 20px;
         z-index: 2;
         .tit_app {
-            height: 170px;
+            height: 180px;
             //background: red;
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: end;
             flex-direction: column;
+            padding-bottom: 10px;
             gap: 10px;
-            span{
+            span {
                 font-size: 12px;
                 color: rgba(251, 251, 251, 0.5);
             }
             h1 {
-                font-size: 45px !important;
+                font-size: 40px !important;
                 text-transform: uppercase;
                 font-family: "Press Start 2P", system-ui;
-                color: var(--main);
+                color: var(--white);
                 user-select: none;
+                position: relative;
+                &::after {
+                    content: attr(data-count);
+                    position: absolute;
+                    width: 32px;
+                    height: 32px;
+                    background: rgba(107, 175, 141, 0.13);
+                    top: -30px;
+                    left: -30px;
+                    font-size: 12px;
+                    //border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: $main;
+                    font-family: "Aldrich", sans-serif;
+                }
 
                 //text-shadow: 4px 4px #000;
             }
@@ -135,6 +165,7 @@ body {
         }
     }
     .list {
+        //overflow-y: scroll;
         flex: 1;
         //background: darkorange;
         //overflow-y: scroll;
@@ -165,11 +196,12 @@ body {
             li {
                 height: auto;
                 display: grid;
-                grid-template-columns: 1fr min-content;
+                grid-template-columns: 1fr min-content min-content;
                 grid-template-rows: 44px;
                 border-bottom: 1px solid $main;
                 transition: all 0.2s ease-in;
                 position: relative;
+                gap: 10px;
                 .date_todo {
                     width: auto;
                     padding-inline: 15px;
@@ -189,22 +221,43 @@ body {
                         }
                     }
                 }
+                .time{
+                    background: rgba(255, 0, 0, 0);
+                    display: flex;
+                    align-items: center;
+                    justify-content: flex-end;
+                    span{
+                        font-size: 12px;
+                        color: rgba(251, 251, 251, 0.5);
+                        white-space: nowrap ;
+                    }
+                }
                 .content {
                     flex: 1;
                     //background: #51e5ff;
-                    padding-inline: 15px;
+                    padding-inline: 5px;
                     display: flex;
                     align-items: center;
                     gap: 10px;
-                    span {
-                        width: 8px;
-                        height: 8px;
-                        background: $white;
-                        display: block;
-                        border-radius: 50%;
+                    button {
+                        width: 28px;
+                        height: 28px;
+                        background: transparent;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border: none;
+                        cursor: pointer;
                         //transform: translateY(1px);
-                        &.done {
-                            background: $main;
+                        i {
+                            font-size: 18px;
+                            color: $white;
+                            pointer-events: none;
+                        }
+                        &.active{
+                            i{
+                                color: $main;
+                            }
                         }
                     }
                     input {
@@ -216,7 +269,7 @@ body {
                         border: none;
                         background: transparent;
                         cursor: pointer;
-                        padding-left: 5px;
+                        //padding-left: 5px;
                         text-transform: capitalize;
                         &:focus {
                             outline: none;
@@ -236,7 +289,7 @@ body {
                     justify-content: space-between;
                     flex-direction: row-reverse;
                     gap: 0;
-                    padding-inline: 6px;
+                    padding-inline: 5px;
                     button {
                         width: 28px;
                         height: 28px;
@@ -302,12 +355,15 @@ footer {
 
 .swal-modal {
     //background: li(#172a3a, 4%) !important;
-    background: $black_2 !important;
+    background: rgba(21, 27, 33, 1) !important;
     //background: $bgcolor !important;
     border: 1px solid $main !important;
     margin: 200px auto 50px;
     max-width: 410px !important;
     width: 90vw !important;
+    position: relative;
+    box-shadow: 0px 25px 50px -12px rgba(0, 0, 0, .5);
+
     .swal-text {
         font-size: 14px;
         text-transform: capitalize;

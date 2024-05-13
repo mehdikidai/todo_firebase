@@ -11,6 +11,7 @@ import {
     query,
     orderBy,
     limit,
+    getDocs
 } from "firebase/firestore";
 import moment from 'moment';
 
@@ -18,6 +19,8 @@ const list = document.getElementById("list");
 const contentSchema = z.string().min(2).max(40).trim();
 const form = document.getElementById("form");
 const todo_text = document.getElementById("todo_text");
+
+let page = 6
 
 window.addEventListener("load", function () {
     this.setTimeout(() => {
@@ -30,7 +33,7 @@ form.addEventListener("submit", (e) => {
 
     if (contentSchema.safeParse(todo_text.value).success) {
         addDoc(todoRef, {
-            content: todo_text.value,
+            content: todo_text.value.replace(/["<>/'``]/gi, '_'),
             done: false,
             date: Timestamp.fromDate(new Date()),
         }).then((res) => {
@@ -41,6 +44,7 @@ form.addEventListener("submit", (e) => {
         swal({
             title: "mkin walo ?",
             text: "Lorem Ipsum is simply dummy",
+            icon:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxZW0iIGhlaWdodD0iMWVtIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxnIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzZiYWY4ZCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjEuNSI+PHBhdGggZD0iTTcuODA1IDMuNDY5QzguMTYgMy4xMTUgOC40NTEgMyA4LjkzNyAzaDYuMTI2Yy40ODYgMCAuNzc4LjExNSAxLjEzMi40NjlsNC4zMzYgNC4zMzZjLjM1NC4zNTQuNDY5LjY0Ni40NjkgMS4xMzJ2Ni4xMjZjMCAuNS0uMTI1Ljc4OC0uNDY5IDEuMTMybC00LjMzNiA0LjMzNmMtLjM1NC4zNTQtLjY0Ni40NjktMS4xMzIuNDY5SDguOTM3Yy0uNSAwLS43ODgtLjEyNS0xLjEzMi0uNDY5TDMuNDcgMTYuMTk1Yy0uMzU1LS4zNTUtLjQ3LS42NDYtLjQ3LTEuMTMyVjguOTM3YzAtLjUuMTI1LS43ODguNDY5LTEuMTMyeiIvPjxwYXRoIGQ9Ik0xMiAxMy40OTZjMC0yLjAwMyAyLTEuNTAzIDItMy41MDZjMC0yLjY1OS00LTIuNjU5LTQgMG0yIDYuMDA3di0uNSIvPjwvZz48L3N2Zz4=",
             button: {
                 text: "Close",
             },
@@ -48,7 +52,7 @@ form.addEventListener("submit", (e) => {
     }
 });
 
-const q = query(todoRef, orderBy("date", "desc"), limit(10));
+const q = query(todoRef, orderBy("date", "desc"), limit(page));
 
 onSnapshot(q, (snap) => {
     const data = snap.docs.map((el) => ({
@@ -60,7 +64,15 @@ onSnapshot(q, (snap) => {
 
     showData(data);
 
-    //console.log(data);
+    console.log(snap.size);
+
+    getDocs(todoRef).then(res=>{
+        console.log(res.size)
+        
+        document.getElementById('h1_logo').dataset.count = res.size < 10 ? "0"+res.size : "+9"
+    })
+    //document.getElementById('h1_logo').dataset.count = snap.size
+
 });
 
 function showData(arr) {
@@ -81,8 +93,9 @@ function deletTodo(id) {
         title: "Are you sure?",
         text: "Lorem Ipsum is simply dummy text of the",
         icon: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxZW0iIGhlaWdodD0iMWVtIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGZpbGw9IiM2YmFmOGQiIGQ9Ik0xNiAydjRoNnYyaC0ydjE0SDRWOEgyVjZoNlYyem0tMiAyaC00djJoNHptMCA0SDZ2MTJoMTJWOHptLTUgMmgydjhIOXptNiAwaC0ydjhoMnoiLz48L3N2Zz4=",
-        buttons: true,
+        buttons: ["Cancel", "Delete"],
         dangerMode: true,
+        className: "ttt",
     }).then((willDelete) => {
         if (willDelete) {
             deleteDoc(docRef).then((res) => {
@@ -156,6 +169,7 @@ const observer = new MutationObserver((obs) => {
 
 observer.observe(list, { childList: true });
 
+
 function showTodoInfo(todo) {
     //console.log(todo,todo.date,moment(todo.date).fromNow());
     swal({
@@ -170,3 +184,9 @@ const date_new = document.getElementById('date_new')
 setInterval(()=>{
     date_new.innerHTML = moment().format('MMMM Do YYYY, h:mm:ss a');
 },1000)
+
+const swalModal = document.querySelector('.swal-modal');
+
+swalModal?.addEventListener('click',()=>{
+    alert('hi')
+})
