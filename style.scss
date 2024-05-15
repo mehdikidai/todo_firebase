@@ -65,7 +65,7 @@ body {
 
 .box_todo {
     max-width: 650px;
-    width: calc(100vw - 20px);
+    width: calc(100vw - 40px);
     min-height: 450px;
     height: calc(100dvh - 120px);
     //background: red;
@@ -459,4 +459,10 @@ footer {
 .todo-notyf {
     border: 2px solid $main;
     border-radius: 4px;
+}
+
+
+img[src="https://www.000webhost.com/static/default.000webhost.com/images/powered-by-000webhost.png"]{
+    display: none !important;
+    z-index: -99;
 }
